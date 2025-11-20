@@ -11,10 +11,10 @@ function App() {
       {/* サイドバー */}
       <aside className="sidebar">
         <div className="logo">
-          <span className="logo-icon">多</span>
+          <span className="logo-icon">環</span>
           <div className="logo-text">
             <div className="logo-title">トラベルリンク 管理システム</div>
-            <div className="logo-subtitle">DuowanGo Admin</div>
+            <div className="logo-subtitle">TravelLink Admin</div>
           </div>
         </div>
 

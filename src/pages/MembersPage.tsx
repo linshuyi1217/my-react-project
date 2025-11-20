@@ -29,7 +29,7 @@ export default function MembersPage() {
         <div>
           <div className="page-title">会員管理</div>
           <div className="page-subtitle">
-            多玩国の会員情報を閲覧・メンテナンスする画面です。（ダミーデータ）
+            トラベルリンクの会員情報を閲覧・メンテナンスする画面です。（ダミーデータ）
           </div>
         </div>
       </header>
