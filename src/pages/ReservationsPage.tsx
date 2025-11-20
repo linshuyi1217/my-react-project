@@ -1,30 +1,74 @@
 import { useMemo, useState } from "react";
-import type { OrderStatus } from "../modules/reservations/types";
+import type { Order, OrderStatus } from "../modules/reservations/types";
 import { MOCK_ORDERS } from "../modules/reservations/mockData";
 import {
   filterOrders,
   calculateTotalAmount,
+  createOrder,
 } from "../modules/reservations/reservationService";
 
 export default function ReservationsPage() {
+  // 用 state 管理订单，而不是直接用 MOCK_ORDERS
+  const [orders, setOrders] = useState<Order[]>(MOCK_ORDERS);
+
   const [keyword, setKeyword] = useState("");
   const [statusFilter, setStatusFilter] = useState<OrderStatus | "すべて">(
     "すべて"
   );
 
+  // “新規予約”用的表单状态
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newUserName, setNewUserName] = useState("");
+  const [newProductName, setNewProductName] = useState("");
+  const [newDate, setNewDate] = useState("");
+  const [newAmount, setNewAmount] = useState("");
+  const [newStatus, setNewStatus] = useState<OrderStatus>("未入金");
+
   const filteredOrders = useMemo(
-    () => filterOrders(MOCK_ORDERS, keyword, statusFilter),
-    [keyword, statusFilter]
+    () => filterOrders(orders, keyword, statusFilter),
+    [orders, keyword, statusFilter]
   );
 
-  const totalAmount = useMemo(() => calculateTotalAmount(MOCK_ORDERS), []);
+  const totalAmount = useMemo(() => calculateTotalAmount(orders), [orders]);
 
   const stats = {
     totalUsers: 1280,
-    totalOrders: MOCK_ORDERS.length,
-    pendingCount: MOCK_ORDERS.filter((x) => x.status === "未入金").length,
+    totalOrders: orders.length,
+    pendingCount: orders.filter((x) => x.status === "未入金").length,
   };
 
+  // 新规予約保存处理
+  const handleCreateOrder = () => {
+    if (!newUserName || !newProductName || !newDate || !newAmount) {
+      alert("必須項目を入力してください。");
+      return;
+    }
+
+    const amountNumber = Number(newAmount);
+    if (Number.isNaN(amountNumber) || amountNumber <= 0) {
+      alert("金額は 0 より大きい数値を入力してください。");
+      return;
+    }
+
+    // 这里改成调用 service 的 createOrder
+    const created = createOrder(orders, {
+      userName: newUserName,
+      productName: newProductName,
+      date: newDate,
+      amount: amountNumber,
+      status: newStatus,
+    });
+
+    setOrders([...orders, created]);
+
+    // ダイアログと入力値リセット
+    setIsDialogOpen(false);
+    setNewUserName("");
+    setNewProductName("");
+    setNewDate("");
+    setNewAmount("");
+    setNewStatus("未入金");
+  };
   return (
     <>
       {/* ヘッダー */}
@@ -94,15 +138,77 @@ export default function ReservationsPage() {
           </div>
           <button
             className="primary-button"
-            onClick={() =>
-              alert(
-                "将来的にはここで「新規予約登録」ダイアログを表示予定です。"
-              )
-            }
+            onClick={() => setIsDialogOpen(true)} // ★ ダイアログ表示
           >
-            ＋ 新規予約（ダミー）
+            ＋ 新規予約
           </button>
         </div>
+
+        {isDialogOpen && (
+          <div className="dialog-backdrop">
+            <div className="dialog">
+              <h2 className="dialog-title">新規予約登録</h2>
+              <div className="dialog-body">
+                <label className="dialog-field">
+                  <span>氏名</span>
+                  <input
+                    value={newUserName}
+                    onChange={(e) => setNewUserName(e.target.value)}
+                    placeholder="山田 太郎"
+                  />
+                </label>
+                <label className="dialog-field">
+                  <span>商品名</span>
+                  <input
+                    value={newProductName}
+                    onChange={(e) => setNewProductName(e.target.value)}
+                    placeholder="ソウル3日間ツアー"
+                  />
+                </label>
+                <label className="dialog-field">
+                  <span>予約日</span>
+                  <input
+                    type="date"
+                    value={newDate}
+                    onChange={(e) => setNewDate(e.target.value)}
+                  />
+                </label>
+                <label className="dialog-field">
+                  <span>金額（JPY）</span>
+                  <input
+                    type="number"
+                    value={newAmount}
+                    onChange={(e) => setNewAmount(e.target.value)}
+                  />
+                </label>
+                <label className="dialog-field">
+                  <span>ステータス</span>
+                  <select
+                    value={newStatus}
+                    onChange={(e) =>
+                      setNewStatus(e.target.value as OrderStatus)
+                    }
+                  >
+                    <option value="未入金">未入金</option>
+                    <option value="入金済み">入金済み</option>
+                    <option value="キャンセル">キャンセル</option>
+                  </select>
+                </label>
+              </div>
+              <div className="dialog-footer">
+                <button
+                  className="primary-button"
+                  onClick={() => setIsDialogOpen(false)}
+                >
+                  キャンセル
+                </button>
+                <button className="primary-button" onClick={handleCreateOrder}>
+                  登録する
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="orders-table-wrapper">
           <table className="orders-table">

@@ -31,3 +31,31 @@ export const calculateTotalAmount = (orders: Order[]): number => {
     .filter((x) => x.status === "入金済み")
     .reduce((sum, x) => sum + x.amount, 0);
 };
+
+/**
+ * 新規予約データを生成する（ID 採番を含む）
+ */
+export const createOrder = (
+  orders: Order[],
+  data: {
+    userName: string;
+    productName: string;
+    date: string;
+    amount: number;
+    status: OrderStatus;
+  }
+): Order => {
+  // 新しい予約番号を生成（0001 の形式）
+  const newId = `${String(orders.length + 1).padStart(4, "0")}`;
+
+  const created: Order = {
+    id: newId,
+    userName: data.userName,
+    productName: data.productName,
+    date: data.date,
+    amount: data.amount,
+    status: data.status,
+  };
+
+  return created;
+};
