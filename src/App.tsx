@@ -6,9 +6,6 @@ import ProductsPage from "./pages/ProductsPage";
 import ReportsPage from "./pages/ReportsPage";
 
 function App() {
-  const getMenuItemClass = (isActive: boolean) =>
-    "menu-item" + (isActive ? " menu-item-active" : "");
-
   return (
     <div className="app">
       {/* サイドバー */}
@@ -16,14 +13,12 @@ function App() {
         <div className="logo">
           <span className="logo-icon">多</span>
           <div className="logo-text">
-            <div className="logo-title">多玩国 管理システム</div>
+            <div className="logo-title">トラベルリンク 管理システム</div>
             <div className="logo-subtitle">DuowanGo Admin</div>
           </div>
         </div>
 
         <nav className="menu">
-          <div className="menu-section-title">メインメニュー</div>
-
           <NavLink
             to="/reservations"
             className={({ isActive }) => (isActive ? "active" : undefined)}
