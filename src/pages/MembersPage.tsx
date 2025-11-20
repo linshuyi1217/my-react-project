@@ -32,6 +32,10 @@ export default function MembersPage() {
             トラベルリンクの会員情報を閲覧・メンテナンスする画面です。（ダミーデータ）
           </div>
         </div>
+        <div className="topbar-right">
+          <span className="topbar-user-name">林さん</span>
+          <span className="topbar-user-role">システム管理者</span>
+        </div>
       </header>
 
       <section className="orders">

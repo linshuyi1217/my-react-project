@@ -24,6 +24,10 @@ export default function ProductsPage() {
             旅行商品マスタの一覧とステータスの確認を行う画面です。（サンプル）
           </div>
         </div>
+        <div className="topbar-right">
+          <span className="topbar-user-name">林さん</span>
+          <span className="topbar-user-role">システム管理者</span>
+        </div>
       </header>
 
       <section className="stats">

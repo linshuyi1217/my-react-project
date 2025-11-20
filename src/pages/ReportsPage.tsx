@@ -8,6 +8,10 @@ export default function ReportsPage() {
             月次・商品別などの売上傾向を確認するための画面です。（グラフはダミー）
           </div>
         </div>
+        <div className="topbar-right">
+          <span className="topbar-user-name">林さん</span>
+          <span className="topbar-user-role">システム管理者</span>
+        </div>
       </header>
 
       <section className="stats">
