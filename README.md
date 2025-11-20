@@ -26,7 +26,7 @@ React の基礎的なコンポーネント構成、props、イベント処理、
 
 ## 使用技術
 
-- **React 18**
+- **React 19**
 - **Vite**
 - **TypeScript (ES6+)**
 - **CSS / module.css**
@@ -35,11 +35,4 @@ React の基礎的なコンポーネント構成、props、イベント処理、
 
 ---
 
-## 🚀 セットアップ
-
-リポジトリをクローンします：
-
-```bash
-git clone https://github.com/あなたのユーザー名/リポジトリ名.git
-cd リポジトリ名
-```
+## セットアップ
